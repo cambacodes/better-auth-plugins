@@ -1,0 +1,28 @@
+{
+  "name": "better-auth-plugins",
+  "version": "1.0.0",
+  "description": "A collection of Better Auth plugins",
+  "type": "module",
+  "workspaces": [
+    "packages/plugins/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "check-types": "turbo run check-types",
+    "clean": "turbo run clean",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "tsup": "^8.5.0",
+    "turbo": "^2.5.6",
+    "typescript": "^5.9.2"
+  },
+  "packageManager": "bun@1.2.4",
+  "engines": {
+    "bun": ">=1.2.4"
+  }
+}
