@@ -1,149 +1,125 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <required> */
-import { generateId } from "better-auth"
 import type { AuthPluginSchema } from "better-auth/types"
-import z from "zod"
-import type { AuthorizationOptions } from "./types"
+import type { AuthorizationConfig } from "./types"
 
-export const permissionSetSchema = z.object({
-  id: z.string().default(generateId),
-  name: z.string(),
-  description: z.string().nullable().optional(),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().nullable().optional(),
-})
-
-export const permissionSchema = z.object({
-  id: z.string().default(generateId),
-  name: z.string(),
-  subject: z.string(),
-  action: z.string(),
-  fields: z.string().nullable().optional(),
-  conditions: z.string().nullable().optional(),
-  inverted: z.boolean().default(false),
-  reason: z.string().nullable().optional(),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().nullable().optional(),
-  expiresAt: z.date().nullable().optional(),
-})
-
-export type PermissionSet = z.infer<typeof permissionSetSchema>
-export type Permission = z.infer<typeof permissionSchema>
-export type PermissionSetInput = z.input<typeof permissionSetSchema>
-export type PermissionInput = z.input<typeof permissionSchema>
-
-export function createAuthorizationSchema({ mode = "user" }: AuthorizationOptions) {
+export function createAuthorizationSchema({ mode = "user" }: AuthorizationConfig) {
   const isUserOrBoth = mode === "user" || mode === "both"
   const isMemberOrBoth = mode === "member" || mode === "both"
 
   return {
-    permissionSet: {
-      fields: {
-        id: { type: "string", required: true },
-        name: { type: "string", required: true },
-        description: { type: "string", required: false },
-        ...(isMemberOrBoth && {
-          organizationId: {
-            type: "string",
-            required: true,
-            references: {
-              model: "organization",
-              field: "id",
-            },
-          },
-        }),
-        createdAt: { type: "date", required: true, defaultValue: () => new Date() },
-        updatedAt: { type: "date", required: false },
-      },
-    },
     permission: {
       fields: {
-        id: { type: "string", required: true },
-        name: { type: "string", required: true },
+        id: { required: true, type: "string" },
+        name: { required: true, type: "string" },
         ...(isMemberOrBoth && {
           organizationId: {
+            references:
+              mode === "member"
+                ? {
+                    field: "id",
+                    model: "organization",
+                  }
+                : undefined,
+            required: mode === "member",
             type: "string",
-            required: true,
-            references: {
-              model: "organization",
-              field: "id",
-            },
           },
         }),
-        subject: {
-          type: "string",
-          required: true,
-        },
         action: {
-          type: "string",
           required: true,
+          type: "string",
         },
-        fields: { type: "string", required: false },
-        conditions: { type: "string", required: false },
-        inverted: { type: "boolean", required: true, defaultValue: false },
-        reason: { type: "string", required: false },
-        createdAt: { type: "date", required: true, defaultValue: () => new Date() },
-        updatedAt: { type: "date", required: false },
-        expiresAt: { type: "date", required: false },
+        conditions: { required: false, type: "string" },
+        createdAt: { defaultValue: () => new Date(), required: true, type: "date" },
+        expiresAt: { required: false, type: "date" },
+        fields: { required: false, type: "string" },
+        inverted: { defaultValue: false, required: true, type: "boolean" },
+        reason: { required: false, type: "string" },
+        subject: {
+          required: true,
+          type: "string",
+        },
+        updatedAt: { required: false, type: "date" },
       },
     },
     permissionPermissionSet: {
       fields: {
         permissionId: {
-          type: "string",
-          required: true,
           references: {
-            model: "permission",
             field: "id",
+            model: "permission",
           },
+          required: true,
+          type: "string",
         },
         permissionSetId: {
-          type: "string",
-          required: true,
           references: {
-            model: "permissionSet",
             field: "id",
+            model: "permissionSet",
           },
+          required: true,
+          type: "string",
         },
+      },
+    },
+    permissionSet: {
+      fields: {
+        description: { required: false, type: "string" },
+        id: { required: true, type: "string" },
+        name: { required: true, type: "string" },
+        ...(isMemberOrBoth && {
+          organizationId: {
+            references:
+              mode === "member"
+                ? {
+                    field: "id",
+                    model: "organization",
+                  }
+                : undefined,
+            required: mode === "member",
+            type: "string",
+          },
+        }),
+        createdAt: { defaultValue: () => new Date(), required: true, type: "date" },
+        updatedAt: { required: false, type: "date" },
       },
     },
     ...(isMemberOrBoth && {
       memberPermission: {
         fields: {
           memberId: {
-            type: "string",
-            required: true,
             references: {
-              model: "member",
               field: "id",
+              model: "member",
             },
+            required: true,
+            type: "string",
           },
           permissionId: {
-            type: "string",
-            required: true,
             references: {
-              model: "permission",
               field: "id",
+              model: "permission",
             },
+            required: true,
+            type: "string",
           },
         },
       },
       memberPermissionSet: {
         fields: {
           memberId: {
-            type: "string",
-            required: true,
             references: {
-              model: "member",
               field: "id",
+              model: "member",
             },
+            required: true,
+            type: "string",
           },
           permissionSetId: {
-            type: "string",
-            required: true,
             references: {
-              model: "permissionSet",
               field: "id",
+              model: "permissionSet",
             },
+            required: true,
+            type: "string",
           },
         },
       },
@@ -151,41 +127,41 @@ export function createAuthorizationSchema({ mode = "user" }: AuthorizationOption
     ...(isUserOrBoth && {
       userPermission: {
         fields: {
-          userId: {
-            type: "string",
-            required: true,
-            references: {
-              model: "user",
-              field: "id",
-            },
-          },
           permissionId: {
-            type: "string",
-            required: true,
             references: {
-              model: "permission",
               field: "id",
+              model: "permission",
             },
+            required: true,
+            type: "string",
+          },
+          userId: {
+            references: {
+              field: "id",
+              model: "user",
+            },
+            required: true,
+            type: "string",
           },
         },
       },
       userPermissionSet: {
         fields: {
-          userId: {
-            type: "string",
-            required: true,
-            references: {
-              model: "user",
-              field: "id",
-            },
-          },
           permissionSetId: {
-            type: "string",
-            required: true,
             references: {
-              model: "permissionSet",
               field: "id",
+              model: "permissionSet",
             },
+            required: true,
+            type: "string",
+          },
+          userId: {
+            references: {
+              field: "id",
+              model: "user",
+            },
+            required: true,
+            type: "string",
           },
         },
       },

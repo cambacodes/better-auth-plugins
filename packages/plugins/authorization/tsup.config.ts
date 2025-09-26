@@ -1,4 +1,4 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsup"
 
 export default defineConfig({
   entry: ["src/index.ts", "src/client.ts"],
@@ -8,4 +8,4 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   external: ["better-auth", "@casl/ability"],
-});
+})
