@@ -44,9 +44,9 @@
   ],
   "license": "MIT",
   "main": "./dist/index.js",
-  "name": "@cambacodes/authorization",
+  "name": "@cambacodes/casl-authorization",
   "peerDependencies": {
-    "better-auth": "1.3.10-beta.1"
+    "better-auth": ">=1.3.10"
   },
   "scripts": {
     "build": "tsup",

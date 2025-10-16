@@ -4,7 +4,7 @@ A monorepo containing plugins for the Better Auth framework.
 
 ## Packages
 
-- **[@cambacodes/authorization](/packages/plugins/authorization)**: Comprehensive CASL-based authorization with role-based access control
+- **[@cambacodes/casl-authorization](/packages/plugins/authorization)**: Comprehensive CASL-based authorization with role-based access control
 
 ## Getting Started
 

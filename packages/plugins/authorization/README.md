@@ -1,4 +1,4 @@
-# @cambacodes/authorization
+# @cambacodes/casl-authorization
 
 Plugin for Better Auth featuring CASL integration, multi-tenant support, and role-based access control.
 
@@ -20,7 +20,7 @@ Built on the Centralized Access Control Library (CASL), this plugin provides sop
 ## Installation
 
 ```bash
-bun add @cambacodes/authorization
+bun add @cambacodes/casl-authorization
 ```
 
 ## Prerequisites
@@ -34,7 +34,7 @@ bun add @cambacodes/authorization
 
 ```typescript
 import { betterAuth } from "better-auth";
-import { authorization } from "@cambacodes/authorization";
+import { authorization } from "@cambacodes/casl-authorization";
 
 const auth = betterAuth({
   plugins: [
@@ -80,7 +80,7 @@ authorization({ mode: "both" }); // organizationId optional
 
 ```typescript
 import { createAuthClient } from "better-auth/client";
-import { authorizationClient } from "@cambacodes/authorization/client";
+import { authorizationClient } from "@cambacodes/casl-authorization/client";
 
 const client = createAuthClient({
   plugins: [authorizationClient],
@@ -212,7 +212,7 @@ import type {
   PermissionSet,
   PermissionResponse,
   CaslPermission,
-} from "@cambacodes/authorization/types";
+} from "@cambacodes/casl-authorization/types";
 ```
 
 ## Error Handling

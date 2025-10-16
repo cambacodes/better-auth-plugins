@@ -1,4 +1,4 @@
-import type { AuthPluginSchema } from "better-auth/types"
+import type { BetterAuthPluginDBSchema } from "better-auth/db"
 import type { AuthorizationConfig } from "./types"
 
 export function createAuthorizationSchema({ mode = "user" }: AuthorizationConfig) {
@@ -166,7 +166,7 @@ export function createAuthorizationSchema({ mode = "user" }: AuthorizationConfig
         },
       },
     }),
-  } satisfies AuthPluginSchema
+  } satisfies BetterAuthPluginDBSchema
 }
 
 export type schema = ReturnType<typeof createAuthorizationSchema>
